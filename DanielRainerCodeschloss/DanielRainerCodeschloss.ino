@@ -38,27 +38,27 @@ byte positionInSequence = 0;
 //updates when a button is opened or closed, stores the milliseconds passed since runtime started
 long timeOfLastAction;
 //whe the buttons are partially open the alert will play after so many milliseconds of inactivity
-const int timeUntilTimeout = 3000;
+const int timeUntilTimeout = 10000;
 //prevents the alert from being triggered for this many milliseconds after a button was closed with others remaining open
-const int timeBeforeResetWhenButtonGetsClosed = 3000;
+const int timeBeforeResetWhenButtonGetsClosed = 7000;
 //true if all buttons were opened in correct sequence, otherwise false
 boolean unlocked = false;
 
 //settings for the alert sound
 //the number of tones used
-const byte numberOfAlertTones = 4;
+byte numberOfAlertTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfAlertTones
-const int alertTones[] = {400, 300, 200, 100};
+int alertTones[] = {400, 300, 200, 100};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
-const int alertTonesDurations[] = {200, 200, 200, 200};
+int alertTonesDurations[] = {200, 200, 200, 200};
 
 //settings for the success sound
 //the number of tones used
-const byte numberOfSuccessTones = 4;
+byte numberOfSuccessTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfSuccessTones
-const int successTones[] = {600, 700, 800, 900};
+int successTones[] = {600, 700, 800, 900};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
-const int successTonesDurations[] = {100, 100, 100, 100};
+int successTonesDurations[] = {100, 100, 100, 100};
 
 void setup() {
   //sets each button pin to INPUT_PULLUP, meaning that digitaRead will return false if it is connected to GND, otherwise true
