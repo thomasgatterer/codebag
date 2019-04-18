@@ -1,3 +1,6 @@
+// Quelle: https://www.youtube.com/watch?v=32FkQvnlMcc&t=2696s
+// zustandsdiagramm in www.draw.io
+
 typedef enum {STATE_ON, STATE_COUNT, STATE_OFF} STATES;
 
 STATES currentState = STATE_OFF, lastState = STATE_COUNT;
@@ -16,6 +19,9 @@ void setup() {
 }
 
 void loop() {
+  //read all pins (no changes during processing)
+
+
   if(currentState == STATE_ON)
   {
     // ENTRY
@@ -28,7 +34,17 @@ void loop() {
     {
     }
   }
-  else if (currentState == STATE_OFF)
-  {}
+  else if (currentState == STATE_A)
+  {
+    //ENTRY
+    //DO
+    //EXIT
+  }
+  else if (currentState == STATE_B)
+  {
+  }
+  else if (currentState == STATE_C)
+  {
+  }
   
 }
