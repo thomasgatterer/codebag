@@ -1,5 +1,5 @@
 // Quelle: https://www.youtube.com/watch?v=32FkQvnlMcc&t=2696s
-// zustandsdiagramm in www.draw.io
+// zustandsdiagramm in www.draw.io https://www.draw.io/#G1oj2BH5IgK97ofaZLbmdGWQQ03IAkYIRX
 
 //author: Daniel Rainer (DR)
 //created: 19/02/2019
@@ -16,17 +16,25 @@
  * 
  * How to connect everything:
  * 
- *       - +
- * ||||||||||||||
- * ) ATMega328p
- * ||||||||||||||
- *   B   +-  B BS
- *   
+ *ARD AAAAAA A 111
+ *INO 543210-R+32109
+ *ATMe22222222211111
+ *gPin87654321098765
+ *    ||||||||||||||
+ *          - +
+ *    ) ATMega328p
+ *      B   +-  B BS
+ *    ||||||||||||||
+ *ATMe12345678901234
+ *gPins        11111
+ *ARD R01234+-CL5678
+ *INO SDDDDD  OKDDDD
  * Legend:
  * -: GND
  * +: +5V
  * B: button (connect each button to GND)
  * S: speaker/sound (connect the speaker to GND)
+ * TG Pin Conversion Arduino to Atmega: http://2.bp.blogspot.com/-AQF-uoqHQc8/VjrCdhMtz_I/AAAAAAAAOeg/oWabG7CbbXc/s1600/atmega328-arduino-pinout.jpg
  */
  
 //the pin the speaker is connected to
@@ -35,7 +43,9 @@ const byte soundPin = 8;
 const byte numberOfButtons = 3;
 //the pins the buttons are attached to, in the order the must be opened for success
 //length of array must be equal to number of buttons
-const byte sequenceOfButtons[] = {5, 1, 7};
+const byte sequenceOfButtons[] = {5, 2, 7};
+//on every loop the states of Buttons get stored
+boolean stateOfButtons[numberOfButtons];
 //true if all buttons were opened in correct sequence, otherwise false
 boolean unlocked = false;
 
@@ -43,7 +53,7 @@ boolean unlocked = false;
 //the number of tones used
 byte numberOfAlertTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfAlertTones
-int alertTones[] = {400, 300, 200, 100};
+int alertTones[] = {400, 300, 100, 100};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
 int alertTonesDurations[] = {200, 200, 200, 200};
 
@@ -51,59 +61,140 @@ int alertTonesDurations[] = {200, 200, 200, 200};
 //the number of tones used
 byte numberOfSuccessTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfSuccessTones
-int successTones[] = {600, 700, 800, 900};
+int successTones[] = {600, 700, 800, 1000};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
 int successTonesDurations[] = {100, 100, 100, 100};
 
 // Quelle: https://www.youtube.com/watch?v=32FkQvnlMcc&t=2696s
 //TG
-typedef enum {STATE_ON, STATE_COUNT, STATE_OFF, STATE_A, STATE_B, STATE_C} STATES;
+typedef enum {STATE_CLOSED, STATE_FIRST_OPENED, STATE_SECOND_OPENED, STATE_OPEN, STATE_SEMI_OPENCLOSED} STATES;
 
-STATES currentState = STATE_OFF, lastState = STATE_COUNT;
 
-const byte LED_OUT = 13;
-
-const byte WECHSLER_IN = 12;
-const byte ONOFF_IN = 12;
+STATES currentState = STATE_CLOSED, lastState = STATE_CLOSED;
 
 void setup() {
   //sets each button pin to INPUT_PULLUP, meaning that digitaRead will return false if it is connected to GND, otherwise true
   for(byte i = 0; i < numberOfButtons; i++){
     pinMode(sequenceOfButtons[i], INPUT_PULLUP);
   }
+  
+  //initialize all buttons
+  for(byte i = 0; i < numberOfButtons; i++){
+    stateOfButtons[i]=false;
+  }  
   //sets the soundPin to OUTPUT
   pinMode(soundPin, OUTPUT);
+
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
 }
 
 void loop() {
   //read all pins (no changes during processing)
+  for(byte i = 0; i < numberOfButtons; i++){
+    stateOfButtons[i]=digitalRead(sequenceOfButtons[i]);
+  } //true in stateOfButtons means is opened
 
-
-  if(currentState == STATE_ON)
+Serial.print("currentState: "); Serial.println(currentState);
+  
+  if(currentState == STATE_CLOSED)
   {
     // ENTRY
     if (lastState != currentState)
     {
-      digitalWrite(LED_OUT, HIGH);
+      lastState = currentState;
     }
-    //DO
-    if (!digitalRead(WECHSLER_IN))
-    {
-    }
-  }
-  else if (currentState == STATE_A)
-  {
-    //ENTRY
     //DO
     //EXIT
+    if (stateOfButtons[0]==true)
+    {
+      currentState = STATE_FIRST_OPENED;
+    }
+    if (stateOfButtons[1]==true||stateOfButtons[2]==true)
+    {
+      alert(); Serial.print("hallo");Serial.println(stateOfButtons[1]);
+      currentState = STATE_SEMI_OPENCLOSED;
+    }
   }
-  else if (currentState == STATE_B)
+  else if (currentState == STATE_FIRST_OPENED)
   {
+    //ENTRY
+    if (lastState != currentState)
+    {
+      lastState = currentState;
+    }
+    //DO
+    if (stateOfButtons[1]==true)
+    {
+      currentState = STATE_SECOND_OPENED;
+    }
+    if (stateOfButtons[1]==false)
+    {
+      currentState = STATE_FIRST_OPENED;
+    }
+    //EXIT
+    if (stateOfButtons[2]==true)
+    {
+      alert();
+      currentState = STATE_SEMI_OPENCLOSED;
+    }
   }
-  else if (currentState == STATE_C)
+  else if (currentState == STATE_SECOND_OPENED)
   {
+    // ENTRY
+    if (lastState != currentState)
+    {
+      lastState = currentState;
+    }
+    //DO
+    if (stateOfButtons[2]==true)
+    {
+      currentState = STATE_OPEN;
+    }
+    if (stateOfButtons[2]==false)
+    {
+      currentState = STATE_FIRST_OPENED;
+    }
+    //EXIT
+    if (stateOfButtons[0]==true)
+    {
+      alert();
+      currentState = STATE_SEMI_OPENCLOSED;
+    }
   }
-  
+  else if (currentState == STATE_OPEN)
+  {
+    // ENTRY
+    if (lastState != currentState)
+    {
+      success();
+      lastState = currentState;
+    }
+    //DO
+    if (stateOfButtons[0]==false||stateOfButtons[1]==false)
+    {
+      currentState = STATE_SEMI_OPENCLOSED;
+    }
+    if (stateOfButtons[2]==false)
+    {
+      currentState = STATE_SECOND_OPENED;
+    }
+    //EXIT
+  }
+  else if (currentState == STATE_SEMI_OPENCLOSED)
+  {
+    // ENTRY
+    if (lastState != currentState)
+    {
+      lastState = currentState;
+    }
+    //DO
+    if (stateOfButtons[0]==false&&stateOfButtons[1]==false&&stateOfButtons[2]==false)
+    {
+      currentState = STATE_CLOSED;
+    }    
+    //EXIT
+  }
 }
 
 //this function is called after an illegal action was committed
@@ -133,4 +224,3 @@ void playSound(byte numberOfTones, int tones[], int durations[]){
     noTone(soundPin);
   }
 }
-
