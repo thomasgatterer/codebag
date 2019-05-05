@@ -85,7 +85,7 @@ byte positionInSequence = 0;
 const byte numberOfButtons = 3;
 //uploading and serial transmission do not work when button 1 is connected to ground
 //for debugging either disconnect the button or use a different one
-const byte buttonPins[numberOfButtons] = {5,1,7};
+const byte buttonPins[numberOfButtons] = {5,2,7};
 boolean currentButtonStates[numberOfButtons];
 boolean previousButtonStates[numberOfButtons];
 
@@ -95,19 +95,19 @@ const byte soundPin = 8;
 
 //settings for the alert sound
 //the number of tones used
-const byte numberOfAlertTones = 4;
+byte numberOfAlertTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfAlertTones
-const uint16_t alertTones[] = {400, 300, 200, 100};
+int alertTones[] = {400, 300, 200, 100};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
-const uint16_t alertTonesDurations[] = {200, 200, 200, 200};
+int  alertTonesDurations[] = {200, 200, 200, 200};
 
 //settings for the success sound
 //the number of tones used
-const byte numberOfSuccessTones = 4;
+byte numberOfSuccessTones = 4;
 //the frequency of the tones in Hertz, length must be equal to numberOfSuccessTones
-const uint16_t successTones[] = {600, 700, 800, 900};
+int successTones[] = {600, 700, 800, 900};
 //the duration of the tones in milliseconds, length must be equal to numberOfAlertTones
-const uint16_t successTonesDurations[] = {100, 100, 100, 100};
+int successTonesDurations[] = {100, 100, 100, 100};
 
 void setup() {
   //sets each button pin to INPUT_PULLUP, meaning that digitalRead will return false if it is connected to GND, otherwise true
@@ -249,7 +249,7 @@ void executeStateSuccess(){
 //takes the number of tones,
 //followed by an array containing the frequency of each individual tone in Hertz,
 //followed by an array containing the duration of each individual tone in milliseconds
-void playSound(const byte numberOfTones, const int tones[], const int durations[]){
+void playSound(byte numberOfTones, int tones[], int durations[]){
   for(byte i = 0; i < numberOfTones; i++){
     //starts to put out a signal on the pin with the number indicated by soundPin
     //with the frequency defined by the second argument

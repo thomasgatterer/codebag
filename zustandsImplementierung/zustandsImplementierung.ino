@@ -76,7 +76,27 @@ void setup() {
   //sets each button pin to INPUT_PULLUP, meaning that digitaRead will return false if it is connected to GND, otherwise true
   for(byte i = 0; i < numberOfButtons; i++){
     pinMode(sequenceOfButtons[i], INPUT_PULLUP);
+pinMode(3, INPUT_PULLUP);
+pinMode(4, INPUT_PULLUP);
+pinMode(6, INPUT_PULLUP);
   }
+
+  const int lowestPin = 2;
+  const int highestPin = 13;
+
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+
+
+  /*/ Alternative output setting set pins 2 through 13 as INPUT_PULLUP exept Sound Pin:
+  for (int thisPin = lowestPin; thisPin <= highestPin; thisPin++) {
+    if(thisPin!=soundPin)
+    {
+      Serial.print("Pin = ");
+      Serial.println(thisPin);
+      pinMode(sequenceOfButtons[thisPin], INPUT_PULLUP);
+    }
+  }*/
   
   //initialize all buttons
   for(byte i = 0; i < numberOfButtons; i++){
@@ -85,17 +105,23 @@ void setup() {
   //sets the soundPin to OUTPUT
   pinMode(soundPin, OUTPUT);
 
-  // initialize serial communication at 9600 bits per second:
-  Serial.begin(9600);
+  success();
 }
 
 void loop() {
+
+  delay(300); // change to let it sleep for less power consumtion
+   
   //read all pins (no changes during processing)
   for(byte i = 0; i < numberOfButtons; i++){
     stateOfButtons[i]=digitalRead(sequenceOfButtons[i]);
   } //true in stateOfButtons means is opened
 
-Serial.print("currentState: "); Serial.println(currentState);
+Serial.print("Button a: "); Serial.print(stateOfButtons[0]);
+Serial.print(" b: "); Serial.print(stateOfButtons[1]);
+Serial.print(" c: "); Serial.print(stateOfButtons[2]);
+
+Serial.print("  currentState: "); Serial.println(currentState);
   
   if(currentState == STATE_CLOSED)
   {
@@ -112,7 +138,7 @@ Serial.print("currentState: "); Serial.println(currentState);
     }
     if (stateOfButtons[1]==true||stateOfButtons[2]==true)
     {
-      alert(); Serial.print("hallo");Serial.println(stateOfButtons[1]);
+      alert();
       currentState = STATE_SEMI_OPENCLOSED;
     }
   }
@@ -128,9 +154,9 @@ Serial.print("currentState: "); Serial.println(currentState);
     {
       currentState = STATE_SECOND_OPENED;
     }
-    if (stateOfButtons[1]==false)
+    if (stateOfButtons[0]==false)
     {
-      currentState = STATE_FIRST_OPENED;
+      currentState = STATE_CLOSED;
     }
     //EXIT
     if (stateOfButtons[2]==true)
@@ -151,16 +177,11 @@ Serial.print("currentState: "); Serial.println(currentState);
     {
       currentState = STATE_OPEN;
     }
-    if (stateOfButtons[2]==false)
+    if (stateOfButtons[1]==false)
     {
       currentState = STATE_FIRST_OPENED;
     }
     //EXIT
-    if (stateOfButtons[0]==true)
-    {
-      alert();
-      currentState = STATE_SEMI_OPENCLOSED;
-    }
   }
   else if (currentState == STATE_OPEN)
   {
