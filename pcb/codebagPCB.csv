@@ -1,0 +1,6 @@
+"Id";"Designator";"Package";"Quantity";"Designation";"Supplier and ref";
+1;"C1";"C_1206_3216Metric";1;"100n";;;
+2;"U1";"DIP-28_W7.62mm_SMDSocket_SmallPads";1;"ATmega328-PU";;;
+3;"button3,J3,J2,J1,button2,button1,beeb1,-2";"1sewPin";8;"Conn_01x01_Female";;;
+4;"J20,J19,J18,J17,J16,J15,J14,J13,J12,J11,J10,J9,J8,J6,J5,J4,-1,+1";"1aditionalPin";18;"Conn_01x01_Female";;;
+5;"J7";"USB_Micro-B_Wuerth_629105150521_CircularHoles";1;"USB_B_Micro";;;

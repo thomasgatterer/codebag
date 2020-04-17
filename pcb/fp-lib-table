@@ -1,0 +1,8 @@
+(fp_lib_table
+  (lib (name "Package_DIP")(type "KiCad")(uri "/home/tomm/devTomm/kicad-footprints/Package_DIP.pretty")(options "")(descr ""))
+  (lib (name "Connector_PCBEdge")(type "KiCad")(uri "/home/tomm/devTomm/kicad-footprints/Connector_PCBEdge.pretty")(options "")(descr ""))
+  (lib (name "Connector")(type "KiCad")(uri "/home/tomm/devTomm/kicad-footprints/Connector.pretty")(options "")(descr ""))
+  (lib (name "Connector_USB")(type "KiCad")(uri "/home/tomm/devTomm/kicad-footprints/Connector_USB.pretty")(options "")(descr ""))
+  (lib (name "codebagPCB")(type "KiCad")(uri "${KIPRJMOD}/codebagPCB.pretty")(options "")(descr ""))
+  (lib (name "Capacitor_SMD")(type "KiCad")(uri "/home/tomm/devTomm/kicad-footprints/Capacitor_SMD.pretty")(options "")(descr ""))
+)
