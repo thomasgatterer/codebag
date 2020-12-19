@@ -43,7 +43,7 @@ const byte soundPin = 8;
 const byte numberOfButtons = 3;
 //the pins the buttons are attached to, in the order the must be opened for success
 //length of array must be equal to number of buttons
-const byte sequenceOfButtons[] = {5, 2, 7};
+const byte sequenceOfButtons[] = {5, 3, 7};
 //on every loop the states of Buttons get stored
 boolean stateOfButtons[numberOfButtons];
 //true if all buttons were opened in correct sequence, otherwise false
