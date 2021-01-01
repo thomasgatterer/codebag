@@ -1,16 +1,21 @@
-update=Do 14 Nov 2019 12:57:24 CET
+update=Mi 29 Apr 2020 12:19:04 CEST
 last_client=kicad
 [general]
 version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceAjustPassiveValues=0
+LabSize=50
+ERC_TestSimilarLabels=1
 [pcbnew]
 version=1
 PageLayoutDescrFile=
-LastNetListRead=
-LastSTEPExportPath=
-LastIDFExportPath=
-LastVRMLExportPath=
-LastSpecctraDSNExportPath=
-LastGenCADExportPath=
+LastNetListRead=codebagPCB.net
 CopperLayerCount=2
 BoardThickness=1.6
 AllowMicroVias=0
@@ -23,7 +28,6 @@ MinViaDrill=0.3
 MinMicroViaDiameter=0.2
 MinMicroViaDrill=0.09999999999999999
 MinHoleToHole=0.25
-CopperEdgeClearance=0.01
 TrackWidth1=0.25
 TrackWidth2=0.4
 TrackWidth3=1.6

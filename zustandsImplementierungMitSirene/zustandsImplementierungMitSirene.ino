@@ -23,7 +23,7 @@
  *    ||||||||||||||
  *          - +
  *    ) ATMega328p
- *      B   +-  B BS
+ *        B +-  B BS
  *    ||||||||||||||
  *ATMe12345678901234
  *gPins        11111
@@ -43,7 +43,7 @@ const byte soundPin = 8;
 const byte numberOfButtons = 3;
 //the pins the buttons are attached to, in the order the must be opened for success
 //length of array must be equal to number of buttons
-const byte sequenceOfButtons[] = {5, 2, 7};
+const byte sequenceOfButtons[] = {5, 3, 7};//equals the Arduino Pins D5 D3 D7 == ic pins 11 5 13 
 //on every loop the states of Buttons get stored
 boolean stateOfButtons[numberOfButtons];
 //true if all buttons were opened in correct sequence, otherwise false
